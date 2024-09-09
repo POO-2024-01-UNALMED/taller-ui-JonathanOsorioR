@@ -127,11 +127,48 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 		
 		Button b = (Button) event.getSource();
 		String value = b.getText();
-		/**
-		***
-		***
-		***
-		***/
+		if (value.matches("[0-9]")) {
+            // Si el valor es un número, actualiza el número en pantalla.
+            displayText.setText(displayText.getText() + value);
+        } else if (value.equals("+") || value.equals("-") || value.equals("*") || value.equals("/")) {
+            // Si el valor es un operador, guarda el primer número y el operador.
+            number1 = String.valueOf(Double.parseDouble(displayText.getText()));
+            operator = value;
+            displayText.setText(""); // Limpia la pantalla.
+        } else if (value.equals("=")) {
+            // Si se presiona "=" realiza la operación y muestra el resultado.
+            number2 = String.valueOf(Double.parseDouble(displayText.getText()));
+            double result = 0;
+
+            switch (operator) {
+                case "+":
+                    result = Double.parseDouble(number1) + Double.parseDouble(number2);
+                    break;
+                case "-":
+                    result = Double.parseDouble(number1) - Double.parseDouble(number2);
+                    break;
+                case "*":
+                    result = Double.parseDouble(number1) * Double.parseDouble(number2);
+                    break;
+                case "/":
+                    if (number2 != String.valueOf(0)) {
+                        result = Double.parseDouble(number1) / Double.parseDouble(number2);
+                    } else {
+                        displayText.setText("Error"); // Manejo de la división por cero.
+                        return;
+                    }
+                    break;
+            }
+           
+
+            displayText.setText(String.valueOf(result));
+        } else if (value.equals("C")) {
+            // Si se presiona "C", reinicia la calculadora.
+            number1 = String.valueOf(0);
+            number2 = String.valueOf(0);
+            operator = "";
+            displayText.setText("");
+        }
 		
 	}
 	
